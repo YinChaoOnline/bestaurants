@@ -1,0 +1,9 @@
+/* ==========================================================================
+   esri slider right bottom
+   ========================================================================== */
+.esriSimpleSliderTL{
+    top:initial;
+    left:initial;
+    right: 20px !important;
+    bottom: 30px !important;
+}
