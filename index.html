@@ -49,6 +49,21 @@
             <img src="" alt="Logo">
         </div>
     </div>
+
+    <script>
+        var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+        var dojoConfig = {
+
+            //允许异步操作
+            async: true,
+            // The locationPath logic below may look confusing but all its doing is
+            // enabling us to load the api from a CDN and load local modules from the correct location.
+            packages: [{
+                name: "app",
+                location: package_path + '/app'
+            }]
+        };
+    </script>
     <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
     <script>
         window.jQuery || document.write('<script src="js/vendor/jquery-1.12.2.min.js"><\/script>')
@@ -59,14 +74,28 @@
     <script src="js/main.js"></script>
     <script>
         var app = {};
-        require(["esri/map", "dojo/domReady!"], function (Map) {
-            app.map = new Map("app-map", {
-                basemap: "osm",
-                center: [112, 34],
-                zoom: 4,
-                logo: false
+        require([
+            "esri/map", "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/SpatialReference", "esri/geometry/Extent",
+            "app/config", "dojo/domReady!"],
+            function (
+                Map, ArcGISDynamicMapServiceLayer,
+                SpatialReference, Extent,
+                appConfig) {
+
+
+                //new the map according the config.js
+                var startExtent = new Extent(appConfig.mapOptions.extentJson);
+                app.map = new Map("app-map", {
+                    basemap: appConfig.mapOptions.basemap,
+                    extent: startExtent
+                });
+
+
+                //add reastaurants layer to the map
+                app.belizeLayer = new ArcGISDynamicMapServiceLayer(appConfig.layers.belizePointLayer.url);
+                app.map.addLayer(app.belizeLayer);
             });
-        });
     </script>
 </body>
 
