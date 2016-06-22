@@ -46,10 +46,11 @@
 
         <!--<div id="app-map-operate"></div>-->
         <div id="app-sidebar">
-            <form class="form-inline">
+            <!-- onsubmit="return false;" can make me use enter keyboard. -->
+            <form class="form-inline" onsubmit="return false;">
                 <div class="form-group">
                     <!--<label for="restaurants">Restaurants Name:</label>-->
-                    <input type="text" class="form-control" placeholder="Search Restaurant">
+                    <input id="search-text" type="text" class="form-control" placeholder="Search Restaurant">
                 </div>
                 <select id="select-category" class="form-control">
                     <option value="99" selected>All</option>
@@ -67,7 +68,7 @@
                     <option value="4">Good</option>
                     <option value="5">Excellent</option>
                 </select>
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button class="btn btn-primary" id="search-submit" type="submit" >Search</button>
             </form>
             <div id="search-result">
 
@@ -111,6 +112,7 @@
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
     <script src="js/filterLayer.js"></script>
+    <script src="js/search.js"></script>
     <script>
         var app = {};
         require([
