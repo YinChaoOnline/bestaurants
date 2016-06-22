@@ -46,8 +46,33 @@
 
         <!--<div id="app-map-operate"></div>-->
         <div id="app-sidebar">
+            <form class="form-inline">
+                <div class="form-group">
+                    <!--<label for="restaurants">Restaurants Name:</label>-->
+                    <input type="text" class="form-control" placeholder="Search Restaurant">
+                </div>
+                <select class="form-control">
+                    <option selected>All</option>
+                    <option>Diner</option>
+                    <option>Restaurant</option>
+                    <option>Cafe</option>
+                    <option>Lounge</option>
+                    <option>Bar</option>
+                </select>
+                <select class="form-control">
+                    <option selected>All</option>
+                    <option>Poor</option>
+                    <option>Fair</option>
+                    <option>Average</option>
+                    <option>Good</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <div id="search-result">
 
+            </div>
         </div>
+        <app id="app-legend"></app>
         <div id="app-map-type"></div>
         <div id="app-logo">
             <img src="" alt="Logo">
