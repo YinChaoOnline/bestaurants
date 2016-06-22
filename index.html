@@ -114,11 +114,12 @@
         require([
             "esri/map", "esri/layers/ArcGISDynamicMapServiceLayer", "esri/layers/FeatureLayer",
             "esri/dijit/Legend",
+            "esri/InfoTemplate",
             "esri/SpatialReference", "esri/geometry/Extent",
             "app/config", "dojo/domReady!"],
             function (
                 Map, ArcGISDynamicMapServiceLayer,FeatureLayer,
-                Legend,
+                Legend,InfoTemplate,
                 SpatialReference, Extent,
                 appConfig) {
 
@@ -130,7 +131,6 @@
                     extent: startExtent
                 });
 
-
                 //add reastaurant layers to the map
                 app.layerFoodAndDrinks = new FeatureLayer(appConfig.layers.belizeMapService.url+"/0",{
                     outFields: ["*"]
@@ -140,14 +140,21 @@
                 });
                 app.map.addLayers([app.layerLandBase,app.layerFoodAndDrinks]);
 
+                //set the layer infotemplate
+                var templateString="<b>${name}</b> [${rating}/5]<br/>"+"${website}<br>"+"${description}";
+                //field name is case sensitive(${*},all fields)
+                var infoTemplate=new  InfoTemplate("Info",templateString);
+                app.layerFoodAndDrinks.setInfoTemplate(infoTemplate);
 
                 //add the legend
                 var legend = new Legend({
                     map: app.map
                 }, appConfig.widgets.legend.id);
                 legend.startup();
+
             });
     </script>
+
 </body>
 
 </html>
