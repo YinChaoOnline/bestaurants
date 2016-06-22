@@ -12,12 +12,12 @@ define(['esri/InfoTemplate'], function (InfoTemplate) {
                 }
             },
             basemap: "osm"
-            //minZoom: 4,
-            //isScrollWheelZoom: true,
-            //nav: false,
-            //logo: false,
-            //wrapAround180: true,
-            //showLabels: true
+                //minZoom: 4,
+                //isScrollWheelZoom: true,
+                //nav: false,
+                //logo: false,
+                //wrapAround180: true,
+                //showLabels: true
         },
 
         /*
@@ -40,6 +40,9 @@ define(['esri/InfoTemplate'], function (InfoTemplate) {
         // To accept default options just pass empty object {}
         // NOTE: to change the position of these widgets, make changes in map.css
         widgets: {
+            legend: {
+                id:"map-legend",
+            },
             scalebar: {
 
             },

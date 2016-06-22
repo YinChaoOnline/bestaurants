@@ -72,7 +72,15 @@
 
             </div>
         </div>
-        <app id="app-legend"></app>
+        <div id="app-legend" class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Map Legend</h3>
+            </div>
+            <div class="panel-body">
+               <div id="map-legend"></div>
+            </div>
+        </div>
+
         <div id="app-map-type"></div>
         <div id="app-logo">
             <img src="" alt="Logo">
@@ -105,10 +113,12 @@
         var app = {};
         require([
             "esri/map", "esri/layers/ArcGISDynamicMapServiceLayer",
+            "esri/dijit/Legend",
             "esri/SpatialReference", "esri/geometry/Extent",
             "app/config", "dojo/domReady!"],
             function (
                 Map, ArcGISDynamicMapServiceLayer,
+                Legend,
                 SpatialReference, Extent,
                 appConfig) {
 
@@ -120,10 +130,15 @@
                     extent: startExtent
                 });
 
-
                 //add reastaurants layer to the map
                 app.belizeLayer = new ArcGISDynamicMapServiceLayer(appConfig.layers.belizePointLayer.url);
                 app.map.addLayer(app.belizeLayer);
+
+                //add the legend
+                var legend = new Legend({
+                    map: app.map
+                }, appConfig.widgets.legend.id);
+                legend.startup();
             });
     </script>
 </body>
