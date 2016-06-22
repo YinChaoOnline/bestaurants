@@ -51,20 +51,21 @@
                     <!--<label for="restaurants">Restaurants Name:</label>-->
                     <input type="text" class="form-control" placeholder="Search Restaurant">
                 </div>
-                <select class="form-control">
-                    <option selected>All</option>
-                    <option>Diner</option>
-                    <option>Restaurant</option>
-                    <option>Cafe</option>
-                    <option>Lounge</option>
-                    <option>Bar</option>
+                <select id="select-category" class="form-control">
+                    <option value="99" selected>All</option>
+                    <option value="0">Diner</option>
+                    <option value="1">Restaurant</option>
+                    <option value="2">Cafe</option>
+                    <option value="3">Bar</option>
+                    <option value="4">Lounge</option>
                 </select>
-                <select class="form-control">
-                    <option selected>All</option>
-                    <option>Poor</option>
-                    <option>Fair</option>
-                    <option>Average</option>
-                    <option>Good</option>
+                <select id="select-rating" class="form-control">
+                    <option value="99" selected>All</option>
+                    <option value="1">Poor</option>
+                    <option value="2">Fair</option>
+                    <option value="3">Average</option>
+                    <option value="4">Good</option>
+                    <option value="5">Excellent</option>
                 </select>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
@@ -118,8 +119,8 @@
             "esri/SpatialReference", "esri/geometry/Extent",
             "app/config", "dojo/domReady!"],
             function (
-                Map, ArcGISDynamicMapServiceLayer,FeatureLayer,
-                Legend,InfoTemplate,
+                Map, ArcGISDynamicMapServiceLayer, FeatureLayer,
+                Legend, InfoTemplate,
                 SpatialReference, Extent,
                 appConfig) {
 
@@ -132,18 +133,18 @@
                 });
 
                 //add reastaurant layers to the map
-                app.layerFoodAndDrinks = new FeatureLayer(appConfig.layers.belizeMapService.url+"/0",{
+                app.layerFoodAndDrinks = new FeatureLayer(appConfig.layers.belizeMapService.url + "/0", {
                     outFields: ["*"]
                 });
-                app.layerLandBase = new FeatureLayer(appConfig.layers.belizeMapService.url+"/1",{
+                app.layerLandBase = new FeatureLayer(appConfig.layers.belizeMapService.url + "/1", {
                     outFields: ["*"]
                 });
-                app.map.addLayers([app.layerLandBase,app.layerFoodAndDrinks]);
+                app.map.addLayers([app.layerLandBase, app.layerFoodAndDrinks]);
 
                 //set the layer infotemplate
-                var templateString="<b>${name}</b> [${rating}/5]<br/>"+"${website}<br>"+"${description}";
+                var templateString = "<b>${name}</b> [${rating}/5]<br/>" + "${website}<br>" + "${description}";
                 //field name is case sensitive(${*},all fields)
-                var infoTemplate=new  InfoTemplate("Info",templateString);
+                var infoTemplate = new InfoTemplate("Info", templateString);
                 app.layerFoodAndDrinks.setInfoTemplate(infoTemplate);
 
                 //add the legend
@@ -153,6 +154,25 @@
                 legend.startup();
 
             });
+    </script>
+    <script>
+        function filterLayer() {
+            var
+                definition = "1 = 1",//1=1 is wrong,should be 1 = 1
+                category = $("#select-category").find(":selected").attr("value"),
+                rating = $("#select-rating").find(":selected").attr("value");
+
+            if (category !== "99")
+                definition = definition + " AND CATEGORY = " + category;
+            if (rating !== "99")
+                definition = definition + " AND RATING = " + rating;
+
+            app.layerFoodAndDrinks.setDefinitionExpression(definition);
+        }
+
+        $("#select-category").change(filterLayer);
+        $("#select-rating").change(filterLayer);
+
     </script>
 
 </body>
