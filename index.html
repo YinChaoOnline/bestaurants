@@ -110,6 +110,7 @@
     <script src="https://js.arcgis.com/3.16/"></script>
     <script src="js/plugins.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/filterLayer.js"></script>
     <script>
         var app = {};
         require([
@@ -154,25 +155,6 @@
                 legend.startup();
 
             });
-    </script>
-    <script>
-        function filterLayer() {
-            var
-                definition = "1 = 1",//1=1 is wrong,should be 1 = 1
-                category = $("#select-category").find(":selected").attr("value"),
-                rating = $("#select-rating").find(":selected").attr("value");
-
-            if (category !== "99")
-                definition = definition + " AND CATEGORY = " + category;
-            if (rating !== "99")
-                definition = definition + " AND RATING = " + rating;
-
-            app.layerFoodAndDrinks.setDefinitionExpression(definition);
-        }
-
-        $("#select-category").change(filterLayer);
-        $("#select-rating").change(filterLayer);
-
     </script>
 
 </body>
