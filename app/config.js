@@ -24,7 +24,7 @@ define(['esri/InfoTemplate'], function (InfoTemplate) {
          *operation layers,belize restaurants layer
          */
         layers: {
-            belizePointLayer: {
+            belizeMapService: {
                 url: 'http://localhost:6080/arcgis/rest/services/BelizeEdit/MapServer',
                 title: 'Restaurants',
                 options: {
