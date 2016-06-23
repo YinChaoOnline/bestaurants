@@ -1,13 +1,44 @@
 require([
     "esri/tasks/QueryTask",
-    "esri/tasks/query", "esri/symbols/SimpleMarkerSymbol", "app/config"],
-    function (QueryTask, Query, SimpleMarkerSymbol, appConfig) {
+    "esri/tasks/query",
+    "esri/tasks/RelationshipQuery",
+    "esri/symbols/SimpleMarkerSymbol",
+    "app/config"],
+    function (QueryTask, Query, RelationshipQuery, SimpleMarkerSymbol, appConfig) {
+
+        function relationQueryCompelete(relatedRecords) {
+            var objectId, featureArray, firstFeature;
+
+            console.log(relatedRecords);
+            for (objectId in relatedRecords) {
+                featureArray = relatedRecords[objectId].features;
+                firstFeature = featureArray[0];
+                $("#review" + objectId).html(
+                    String.format(
+                        "<i>{0}</i>,<br>by user <i> {1}</i>",
+                        firstFeature.attributes["review"],
+                        firstFeature.attributes["user_"]));
+            }
+        }
+
+        function picturesQueryComplete(pictures) {
+            //in case of no pictures quit.
+            if (pictures.length == 0) return;
+            //get the first picture
+            var firstPicture = pictures[0];
+            //set it to its place holder
+            $("#picture" + firstPicture.objectId).html(
+                String.format(
+                    "<img src='{0}' class='review-picture'>",
+                    firstPicture.url));
+        }
 
         function showRestaurant(i) {
             var
                 name = $(this).text(),
                 symbol,
-                currentFeature;
+                currentFeature,
+                relatedReviews;
 
             //find the feature by name
             for (var i = 0; i < app.queryResults.features.length; i++) {
@@ -34,6 +65,38 @@ require([
             app.map.graphics.add(currentFeature);
         }
 
+        function addReviews(results) {
+            var
+                i = 0,
+                currentFeature,
+                relatedReviews;
+            for (i = 0; i < results.features.length; i++) {
+
+                currentFeature = results.features[i];
+
+                //Create relationship query object
+                relatedReviews = new RelationshipQuery();
+                relatedReviews.outFields = ["*"];
+                //The relationship id is zero based on the url
+                relatedReviews.relationshipId = 0;
+                relatedReviews.objectIds = [currentFeature.attributes["objectid"]];
+                app.layerFoodAndDrinks.queryRelatedFeatures(relatedReviews, relationQueryCompelete);
+            }
+        }
+
+        function addPictures(results) {
+            var
+                i = 0,
+                currentFeature;
+
+            for (i = 0; i < results.features.length; i++) {
+                currentFeature = results.features[i];
+                if (app.layerFoodAndDrinks.hasAttachments) {
+                    app.layerFoodAndDrinks.queryAttachmentInfos(currentFeature.attributes["objectid"], picturesQueryComplete);
+                }
+            }
+        }
+
         function showResults(results) {
             var feature,
                 i = 0,
@@ -48,11 +111,11 @@ require([
 
                 //TODO:use handlebar template
                 resultHtml = resultHtml + String.format(
-                    "<b>Name:</b><a>{1}</a><br/> <b>Rating:</b>{2}<br/><br/><br/>",
-                    i,
+                    "<b>Name:</b><a>{0}</a><br/> <b>Rating:</b>{1}<div id='review{2}'></div><div id='picture{2}'></div><br><br>",
                     feature.attributes["name"],
-                    feature.attributes["rating"]
-                );
+                    feature.attributes["rating"],
+                    feature.attributes["objectid"]
+                ); //place a holder for each review to be populated
             }
 
             $("#search-result").html(resultHtml);
@@ -61,6 +124,10 @@ require([
             $.each($("#search-result a"), function (index, value) {
                 $(value).click(showRestaurant);
             });
+
+            //add review
+            addReviews(results);
+            addPictures(results);
         }
 
         //search button click event handler
