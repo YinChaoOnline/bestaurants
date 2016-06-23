@@ -5,19 +5,19 @@ require([
 
         function showRestaurant(i) {
             var
-                name=$(this).text(),
+                name = $(this).text(),
                 symbol,
                 currentFeature;
 
             //find the feature by name
-            for(var i=0;i<app.queryResults.features.length;i++){
-                if(name===app.queryResults.features[i].attributes.name){
-                    currentFeature=app.queryResults.features[i];
+            for (var i = 0; i < app.queryResults.features.length; i++) {
+                if (name === app.queryResults.features[i].attributes.name) {
+                    currentFeature = app.queryResults.features[i];
                     break;
                 }
             }
 
-            if(!currentFeature) return;
+            if (!currentFeature) return;
 
             //create symbol
             symbol = new SimpleMarkerSymbol();
@@ -33,7 +33,6 @@ require([
             //so we only add this one
             app.map.graphics.add(currentFeature);
         }
-
 
         function showResults(results) {
             var feature,
@@ -59,11 +58,10 @@ require([
             $("#search-result").html(resultHtml);
 
             //highlight the feature
-            $.each($("#search-result a"),function(index,value){
-               $(value).click(showRestaurant);
+            $.each($("#search-result a"), function (index, value) {
+                $(value).click(showRestaurant);
             });
         }
-
 
         //search button click event handler
         $("#search-submit").click(function (event) {
@@ -88,10 +86,9 @@ require([
             query.outFields = ["name", "rating", "objectid"];
             query.returnGeometry = true;
 
-            //support lowerCase or upperCase search
+            //support lowerCase or upperCase insensitive
             query.where = String.format(
-                "name LIKE '%{0}%' OR name LIKE '%{1}%'",
-                searchText.toLowerCase(),
+                "UPPER(name) LIKE '%{0}%'",
                 searchText.toUpperCase()
             );
 
