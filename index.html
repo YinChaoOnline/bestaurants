@@ -69,7 +69,7 @@
                     <option value="4">Good</option>
                     <option value="5">Excellent</option>
                 </select>
-                <button class="btn btn-primary" id="search-submit" type="submit" >Search</button>
+                <button class="btn btn-primary" id="search-submit" type="submit">Search</button>
             </form>
             <div id="search-result">
 
@@ -143,6 +143,8 @@
                 app.layerLandBase = new FeatureLayer(appConfig.layers.belizeMapService.url + "/1", {
                     outFields: ["*"]
                 });
+                app.layerReviewTable = new FeatureLayer(appConfig.layers.belizeMapService.url + "/2");
+
                 app.map.addLayers([app.layerLandBase, app.layerFoodAndDrinks]);
 
                 //set the layer infotemplate

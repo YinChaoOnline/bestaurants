@@ -111,11 +111,14 @@ require([
 
                 //TODO:use handlebar template
                 resultHtml = resultHtml + String.format(
-                    "<b>Name:</b><a>{0}</a><br/> <b>Rating:</b>{1}<div id='review{2}'></div><div id='picture{2}'></div><br><br>",
+                    "<b>Name:</b><a>{0}</a><br/> <b>Rating:</b>{1}<div id='review{2}'></div><div id='picture{2}'></div><br>",
                     feature.attributes["name"],
                     feature.attributes["rating"],
                     feature.attributes["objectid"]
                 ); //place a holder for each review to be populated
+                resultHtml = resultHtml + String.format(
+                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'> <br><input type='button' value='Add' id='btn{0}'><br><br>",
+                    feature.attributes["objectid"]);
             }
 
             $("#search-result").html(resultHtml);
@@ -123,6 +126,32 @@ require([
             //highlight the feature
             $.each($("#search-result a"), function (index, value) {
                 $(value).click(showRestaurant);
+            });
+
+            //submit new review
+            $.each($("#search-result input[type='button']"), function (index, value) {
+                $(value).click(function(){
+
+                    //obtain oid
+                    var oid=$(this).attr("id").substring(3);
+                    console.log(oid);
+
+                    var objectid = oid;
+                    var review = $("#inputReview" + oid).val();
+                    var rating = $("#inputRating" + oid).val();
+                    var newReview = {
+                        attributes: {
+                            venue_objectid: objectid,
+                            review: review,
+                            rating: rating,
+                            user_: "yinchao"
+                        }
+                    };
+                    //apply edits and pass the review record
+                    app.layerReviewTable.applyEdits([newReview], null, null, null, null);
+
+                    alert("Congratulations!Review has been added.");
+                });
             });
 
             //add review
