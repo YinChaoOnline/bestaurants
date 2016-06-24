@@ -100,20 +100,22 @@ require([
         function addNewReview() {
 
             //obtain oid
-            var oid = $(this).attr("id").substring(3);
-            console.log(oid);
+            var
+                oid = $(this).attr("id").substring(3),
+                review = $("#inputReview" + oid).val(),
+                rating = $("#inputRating" + oid).val(),
+                currentTime = moment().format('YYYY/MM/DD'),//using moment.js
+                newReview = {
+                    attributes: {
+                        venue_objectid: oid,
+                        review: review,
+                        rating: rating,
+                        user_: "yinchao",
+                        review_date: currentTime
+                    }
+                };
 
-            var objectid = oid;
-            var review = $("#inputReview" + oid).val();
-            var rating = $("#inputRating" + oid).val();
-            var newReview = {
-                attributes: {
-                    venue_objectid: objectid,
-                    review: review,
-                    rating: rating,
-                    user_: "yinchao"
-                }
-            };
+                console.log(currentTime);
             //apply edits and pass the review record
             app.layerReviewTable.applyEdits([newReview], null, null, null, null);
 
