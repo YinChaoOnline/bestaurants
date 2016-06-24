@@ -97,6 +97,29 @@ require([
             }
         }
 
+        function addNewReview() {
+
+            //obtain oid
+            var oid = $(this).attr("id").substring(3);
+            console.log(oid);
+
+            var objectid = oid;
+            var review = $("#inputReview" + oid).val();
+            var rating = $("#inputRating" + oid).val();
+            var newReview = {
+                attributes: {
+                    venue_objectid: objectid,
+                    review: review,
+                    rating: rating,
+                    user_: "yinchao"
+                }
+            };
+            //apply edits and pass the review record
+            app.layerReviewTable.applyEdits([newReview], null, null, null, null);
+
+            alert("Congratulations!Review has been added.");
+        }
+
         function showResults(results) {
             var feature,
                 i = 0,
@@ -130,28 +153,7 @@ require([
 
             //submit new review
             $.each($("#search-result input[type='button']"), function (index, value) {
-                $(value).click(function(){
-
-                    //obtain oid
-                    var oid=$(this).attr("id").substring(3);
-                    console.log(oid);
-
-                    var objectid = oid;
-                    var review = $("#inputReview" + oid).val();
-                    var rating = $("#inputRating" + oid).val();
-                    var newReview = {
-                        attributes: {
-                            venue_objectid: objectid,
-                            review: review,
-                            rating: rating,
-                            user_: "yinchao"
-                        }
-                    };
-                    //apply edits and pass the review record
-                    app.layerReviewTable.applyEdits([newReview], null, null, null, null);
-
-                    alert("Congratulations!Review has been added.");
-                });
+                $(value).click(addNewReview);
             });
 
             //add review
