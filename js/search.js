@@ -104,7 +104,7 @@ require([
                 oid = $(this).attr("id").substring(3),
                 review = $("#inputReview" + oid).val(),
                 rating = $("#inputRating" + oid).val(),
-                currentTime = moment().format('YYYY/MM/DD'),//using moment.js
+                currentTime = moment().format('YYYY/MM/DD'), //using moment.js
                 newReview = {
                     attributes: {
                         venue_objectid: oid,
@@ -115,9 +115,12 @@ require([
                     }
                 };
 
-                console.log(currentTime);
+            console.log(currentTime);
             //apply edits and pass the review record
             app.layerReviewTable.applyEdits([newReview], null, null, null, null);
+
+            console.log($("#fileinput").val());
+            app.layerReviewTable.addAttachment(oid, document.getElementById("form" + oid), null, null);
 
             alert("Congratulations!Review has been added.");
         }
@@ -141,8 +144,10 @@ require([
                     feature.attributes["rating"],
                     feature.attributes["objectid"]
                 ); //place a holder for each review to be populated
+
+                //review--rating,review
                 resultHtml = resultHtml + String.format(
-                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'> <br><input type='button' value='Add' id='btn{0}'><br><br>",
+                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'><br><form id='form{0}'><input id='inputFile{0}' type='file' name='attachment'> <br><input type='button' value='Add' id='btn{0}'><br><br>",
                     feature.attributes["objectid"]);
             }
 

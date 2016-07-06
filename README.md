@@ -39,6 +39,8 @@ Bestaurants is a Learning **Web GIS demo** based on the instructional book `Buil
 5.add GPS support.
 
 6.add edit functionality.
+7.auto center map
+8.show or hide panel with some animations
 
 ##Resources
 - Book--"Building Web Applications with ArcGIS",[amazon link](https://www.amazon.com/Building-Applications-ArcGIS-Hussein-Nasser/dp/1783552956)
