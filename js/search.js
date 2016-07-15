@@ -119,7 +119,7 @@ require([
             //apply edits and pass the review record
             app.layerReviewTable.applyEdits([newReview], null, null, null, null);
 
-            console.log($("#fileinput").val());
+            console.log($("#inputFile" + oid).val());
             app.layerReviewTable.addAttachment(oid, document.getElementById("form" + oid), null, null);
 
             alert("Congratulations!Review has been added.");
@@ -147,7 +147,7 @@ require([
 
                 //review--rating,review
                 resultHtml = resultHtml + String.format(
-                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'><br><form id='form{0}'><input id='inputFile{0}' type='file' name='attachment'> <br><input type='button' value='Add' id='btn{0}'><br><br>",
+                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'><br><form id='form{0}'><input id='inputFile{0}' type='file' name='attachment'> </form><br><input type='button' value='Add' id='btn{0}'><br><br>",
                     feature.attributes["objectid"]);
             }
 
