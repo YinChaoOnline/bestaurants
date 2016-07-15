@@ -119,8 +119,14 @@ require([
             //apply edits and pass the review record
             app.layerReviewTable.applyEdits([newReview], null, null, null, null);
 
-            console.log($("#inputFile" + oid).val());
-            app.layerReviewTable.addAttachment(oid, document.getElementById("form" + oid), null, null);
+            //console.log($("#inputFile" + oid).val());
+
+            if (app.layerFoodAndDrinks.isEditable && app.layerFoodAndDrinks.hasAttachments) {
+                app.layerFoodAndDrinks.addAttachment(oid, document.getElementById("form" + oid), null, function (err) {
+                    console.log(err.message);
+                    return;
+                });
+            }
 
             alert("Congratulations!Review has been added.");
         }
@@ -146,8 +152,9 @@ require([
                 ); //place a holder for each review to be populated
 
                 //review--rating,review
+                //important: form>input:file must have a  name called "attachment"
                 resultHtml = resultHtml + String.format(
-                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'><br><form id='form{0}'><input id='inputFile{0}' type='file' name='attachment'> </form><br><input type='button' value='Add' id='btn{0}'><br><br>",
+                    "Review:<input type='text' id='inputReview{0}'><br> Rating:<input type='text' id='inputRating{0}'><br><form id='form{0}'><input type='file' name='attachment'></form><br><input type='button' value='Add' id='btn{0}'><br><br>",
                     feature.attributes["objectid"]);
             }
 
